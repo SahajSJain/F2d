@@ -1,0 +1,26 @@
+========= GRID DETAILS ==================================
+256,256 / Nx	 Ny
+1,	0.0,	  1.0 /x_unif,  Nx_start, Nx_end
+1,	0.0, 	  1.0 /y_unif,  Ny_start, Ny_end
+======== SOLVER DETAILS =================================
+0.01	,		100 /dt (dt=CFL*min(dx))	Re		
+1	,		1  ,   1 ,    0 /Tn (No. of timesteps),	nprint,  ndump,   ndumpinit
+0 /VonKan (vkflag)
+~~~Advection Diffusion Solver~~~
+1000	,1.e-9 /adkmax,	eps_ad
+~~~Pressure Solver~~
+1,	10,	10000	,1.e-9	,	1.9 /PSolver,	kiner,	kmax,	eps_pres,	overrelax	
+== Boundary Conditions and Field == (only zero p grad supported for now. Solver written for robin bc)
+~~~Left BC ~~~
+1 	, 0 , 0 /bctype_e, ubc_e, vbc_e
+~~~Right BC ~~~
+2 	, 0 , 0  /bctype_e, ubc_e, vbc_e
+~~~North BC ~~~
+3 	, 0 , 0 /bctype_e, ubc_e, vbc_e
+~~~South BC ~~~
+4 	, 0 , 0 /bctype_e, ubc_e, vbc_e
+~~ Field initialization~~
+.0	, .0 , 0.00, .0 , .0 //uinit		vinit	perturb	force_x		force_y
+
+/// Boundary Conditions
+
