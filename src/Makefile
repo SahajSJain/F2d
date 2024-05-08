@@ -2,7 +2,7 @@ CXX=g++-13
 CFLAGS= -pg  -Winline -Wextra  -Wall -Wextra -O3 -Werror -pedantic -Ofast -std=c++23 -fopenmp
 # -Wextra  -Wall -Wextra -O3 -Werror -pedantic -Ofast -Winline -std=c++2c
 HDIR=./headers
-DEPSNAME = INPUT.h FUNCTIONS.h FIELDVARS.h CLASSES.h COEFFVARS.h FLOWVARS.h 
+DEPSNAME = INPUT.h FUNCTIONS.h FIELDVARS.h CLASSES.h COEFFVARS.h FLOWVARS.h IBMVARS.h 
 DEPS = $(patsubst %,$(HDIR)/%,$(DEPSNAME))
 
 ODIR=./obj
@@ -17,7 +17,9 @@ OBJNAME = main_program.o\
 	  		fractional_step.o\
 	  		tecplot_printer.o\
 			fractional_step_looper.o\
-			debug_export.o
+			debug_export.o\
+			ssm_setup.o\
+			ssm_bc.o
 OBJ = $(patsubst %,$(ODIR)/%,$(OBJNAME))
 
 

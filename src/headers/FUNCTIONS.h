@@ -22,11 +22,10 @@ void HalfCalc(Eigen::ArrayXXd &u, Eigen::ArrayXXd &u_i, Eigen::ArrayXXd &u_j);
 void ConvCalc(Eigen::ArrayXXd &C, Eigen::ArrayXXd &u,
               Eigen::ArrayXXd &u_i, Eigen::ArrayXXd &u_j,
               Eigen::ArrayXXd &ci, Eigen::ArrayXXd &cj);
-void DiffCalc(Eigen::ArrayXXd &D, Eigen::ArrayXXd &u, CLASSES::SolverCoeffs &A);
+void DiffCalc(Eigen::ArrayXXd &D, CLASSES::NeighbourField &U, CLASSES::SolverCoeffs &A);
 void MassCalc(Eigen::ArrayXXd &C, Eigen::ArrayXXd &ci, Eigen::ArrayXXd &cj);
-
 void GradPFace(Eigen::ArrayXXd &p, Eigen::ArrayXXd &pgx_ci, Eigen::ArrayXXd &pgy_cj);
-void GradPCenter(Eigen::ArrayXXd &p, Eigen::ArrayXXd &pgx, Eigen::ArrayXXd &pgy);
+void GradPCenter(CLASSES::NeighbourField &P, Eigen::ArrayXXd &pgx, Eigen::ArrayXXd &pgy);
 
 // veelocity_predictor.cpp
 void VelocityPredictor(Eigen::ArrayXXd &us, Eigen::ArrayXXd &vs,
@@ -49,3 +48,20 @@ void fractional_step_looper();
 //debug_export.cp
 void debug_export();
 
+//ssm_Setup.cpp
+void ssm_setup();
+
+//ssm_bc.cpp
+void ssm_bc_dir(Eigen::ArrayXXd &u,
+                CLASSES::NeighbourField &U); // aply dirichlet bc
+
+void ssm_bc_neum(Eigen::ArrayXXd &u,
+                 CLASSES::NeighbourField &U); // aply dirichlet bc
+
+void ssm_flux_bc(Eigen::ArrayXXd &ci, Eigen::ArrayXXd &cj); //flux bc
+
+void ssm_adhoc_bc(Eigen::ArrayXXd &u,
+                 Eigen::ArrayXXd &v,
+                 Eigen::ArrayXXd &p);
+
+void getforce(Eigen::ArrayXXd &p ); //force calculation

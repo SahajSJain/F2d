@@ -52,6 +52,12 @@ namespace INPUTDATA
     inline double fluxintegral=0, flowintegralpost=0, outflowarea=0;
     inline double inflowintegral=0, outflowintegral=0;
     inline double inflowintegralpost=0, outflowintegralpost=0;
+    inline bool ssmflag, forceflag;
+    inline int ssm_bodytype;
+    inline double ssm_x1, ssm_y1, ssm_x2, ssm_y2, ssm_rad;
+    inline int issm{0};
+    inline double ssm_xc{0.0}, ssm_yc{0.0};
+    inline  std::ofstream forceout("./out/force.dat"); // print out force
 
-}
+}           
 
