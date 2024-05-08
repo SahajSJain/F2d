@@ -1,0 +1,30 @@
+========= GRID DETAILS ==================================
+184,128 / Nx	 Ny
+0,	0.0,	  1.0 /x_unif,  Nx_start, Nx_end
+0,	0.0, 	  1.0 /y_unif,  Ny_start, Ny_end
+======== SOLVER DETAILS =================================
+0.016	, 100 /dt (dt=CFL*min(dx))	Re		
+12000	,120  ,   120,    5000 /Tn (No. of timesteps),	nprint,  ndump,   ndumpinit
+0 /VonKan (vkflag)
+1 ,0 /Debugger, DebuggerOut
+~~~Advection Diffusion Solver~~~
+1000	,1.e-7 /adkmax,	eps_ad
+~~~Pressure Solver~~
+1,	8,	10000	,1.e-7	,	1.95 /PSolver,	kiner,	kmax,	eps_pres,	overrelax
+~~~~ SSM STUFF ~~~~~~ //ssm on by default. cannot be switched off.
+1, 1 /SSMFlag, forceflag 
+1 , 30.60 , 16.00 , 0.70 , 0. , 0.50 //ssm_bodytype, ssm_x1, ssm_y1, ssm_x2, ssm_y2, ssm_rad	
+== Boundary Conditions and Field == (only zero p grad supported for now. Solver written for robin bc)
+~~~Left BC ~~~
+3 	, 1.0 , 0 /bctype_e, ubc_e, vbc_e
+~~~Right BC ~~~
+4 	, 0.0 , 0  /bctype_e, ubc_e, vbc_e
+~~~North BC ~~~
+2 	, 0 , 0 /bctype_e, ubc_e, vbc_e
+~~~South BC ~~~
+2 	, 0 , 0 /bctype_e, ubc_e, vbc_e
+~~ Field initialization~~
+1	, .0 , 0.01, .0 , .0 //uinit		vinit	perturb	force_x		force_y
+
+/// Boundary Conditions
+
