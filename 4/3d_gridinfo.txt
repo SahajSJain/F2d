@@ -1,0 +1,27 @@
+3D Sim Info 
+This is a grid generated for the following case: 
+Lref=    1.000 
+Uref=    1.000  
+Re=1/nu= 1000.000 
+Relevant Physical Length Scale chosen as BL thickness is, l_p= 5/sqrt(Re)=    0.158 Lref 
+Total number of grid points, N_x *N_y *N_y=3,385,025
+ 
+3D Grid Info 
+Direction: x 
+N_x= 161 
+Uniform Box Region: Centered at  4.00, Starts at 4.00 , ends at 6.00  and has Delta x = l_p /    5.060 =    0.031  
+Upstream Region: Starts at 0.00 , ends at 4.00  and has stretch factor = 1.10  
+Downstream Region: Starts at 6.00 , ends at 21.00  and has stretch factor = 1.05  
+ 
+3D Grid Info 
+Direction: y and z 
+N_y= 145 
+Uniform Box Region: Centered at 30.00 ,Starts at 29.40 , ends at 30.60  and has Delta y = l_p /    5.007 =    0.032  
+Down Region: Starts at 0.00 , ends at 29.40  and has stretch factor = 1.09  
+Up Region: Starts at 30.60 , ends at 60.00  and has stretch factor = 1.09  
+ 
+TimeStep size selection 
+Smallest grid spacing is Delta= x =    0.031 
+For Convective CFL = 1 (C-CFL=uref*dt/dx+2*uref*dt/dy), Delta t=    0.010 
+For Diffusive CFL = 1 (D-CFL=2*nu*dt/dx^2+2*2*nu*dt/dy^2), Delta t=    0.165 
+Cell Peclet Number (Pe=uref*dx/nu+2*uref*dy/nu) is Pe=   94.408 
