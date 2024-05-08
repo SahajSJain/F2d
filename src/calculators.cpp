@@ -1,0 +1,116 @@
+#include "./headers/CLASSES.h"
+#include "./headers/COEFFVARS.h"
+#include "./headers/FIELDVARS.h"
+#include "./headers/FUNCTIONS.h"
+#include "./headers/INPUT.h"
+#include <eigen3/Eigen/Dense>
+// #include <string> //Wheres Wallace????make
+#include "omp.h"
+// #include "./headers/IBMVARS.h"
+
+// #include <iostream>
+// #include <iostream>
+using namespace INPUTDATA;
+using namespace FIELDVARS;
+using namespace Eigen;
+using namespace COEFFVARS;
+using namespace CLASSES;
+// using namespace IBMVARS; //I guess not really needed and including this might
+// slow down compile time #include <iostream>
+
+// Calculates things on faces
+void HalfCalc(Eigen::ArrayXXd &u, Eigen::ArrayXXd &u_i, Eigen::ArrayXXd &u_j) {
+  u_i *= 0;
+  u_j *= 0;
+// std::cout<<u_j;
+#pragma omp parallel for private(j, i) collapse(2)
+  for (j = jf_s; j <= jf_e; j++) {
+    for (i = if_s; i <= if_e; i++) {
+      u_i(i, j) = u(i, j) * CoW(i) + u(i + 1, j) * CoE(i);
+      u_j(i, j) = u(i, j) * CoS(j) + u(i, j + 1) * CoN(j);
+    }
+  }
+}
+
+// Calculates convection
+// no need to send NeighbourField. We imposed 0 fluxes on the body so the fluxes
+// will be zero. Dont need to have u_i=0 on the body because ci is 0 on the body
+void ConvCalc(Eigen::ArrayXXd &C, Eigen::ArrayXXd &u, Eigen::ArrayXXd &u_i,
+              Eigen::ArrayXXd &u_j, Eigen::ArrayXXd &ci, Eigen::ArrayXXd &cj) {
+  HalfCalc(u, u_i, u_j);
+  C *= 0;
+#pragma omp parallel for private(j, i) collapse(2)
+  for (j = j_s; j <= j_e; j++) {
+    for (i = i_s; i <= i_e; i++) {
+      C(i, j) =
+          (ci(i, j) * u_i(i, j) - ci(i - 1, j) * u_i(i - 1, j)) * delx_inv(i) +
+          (cj(i, j) * u_j(i, j) - cj(i, j - 1) * u_j(i, j - 1)) * dely_inv(j);
+    }
+  }
+  // ci=ci;
+  // cj=cj;
+}
+
+// send Neighborsfield here.
+void DiffCalc(Eigen::ArrayXXd &D, CLASSES::NeighbourField &U,
+              CLASSES::SolverCoeffs &A) { // A should be Laplace coefficients,
+                                          // i.e DEq or something similar
+  D *= 0;
+#pragma omp parallel for private(j, i) collapse(2)
+  for (j = j_s; j <= j_e; j++) {
+    for (i = i_s; i <= i_e; i++) {
+      D(i, j) = A.W(i, j) * U.W(i - 1, j) + A.E(i, j) * U.E(i + 1, j) +
+                A.S(i, j) * U.S(i, j - 1) + A.N(i, j) * U.N(i, j + 1) -
+                A.P(i, j) * U.P(i, j);
+    }
+  }
+  // std::cout<<A.W;
+}
+
+void MassCalc(Eigen::ArrayXXd &C, Eigen::ArrayXXd &ci, Eigen::ArrayXXd &cj) {
+  C *= 0;
+#pragma omp parallel for private(j, i) collapse(2)
+  for (j = j_s; j <= j_e; j++) {
+    for (i = i_s; i <= i_e; i++) {
+      C(i, j) = (ci(i, j) - ci(i - 1, j)) * delx_inv(i) +
+                (cj(i, j) - cj(i, j - 1)) * dely_inv(j);
+    }
+  }
+}
+
+void GradPFace(Eigen::ArrayXXd &p, Eigen::ArrayXXd &pgx_ci,
+               Eigen::ArrayXXd &pgy_cj) {
+  pgx_ci *= 0;
+  pgy_cj *= 0;
+#pragma omp parallel for private(j, i) collapse(2)
+  for (j = jf_s; j <= jf_e; j++) {
+    for (i = if_s; i <= if_e; i++) {
+      pgx_ci(i, j) = (p(i + 1, j) - p(i, j)) * dx_inv(i);
+      pgy_cj(i, j) = (p(i, j + 1) - p(i, j)) * dy_inv(j);
+    }
+  }
+}
+
+void GradPCenter(CLASSES::NeighbourField &P, Eigen::ArrayXXd &pgx,
+                 Eigen::ArrayXXd &pgy) {
+  pgx *= 0;
+  pgy *= 0;
+
+#pragma omp parallel for private(j, i) collapse(2)
+  for (j = j_s; j <= j_e; j++) {
+    for (i = i_s; i <= i_e; i++) {
+      pgx(i, j) = (P.E(i + 1, j) - P.W(i - 1, j)) * GCOx(i);
+      pgy(i, j) = (P.N(i, j + 1) - P.S(i, j - 1)) * GCOy(j);
+    }
+  }
+}
+
+// void Equator(CLASSES::FractionalStepArrays &A,CLASSES::FractionalStepArrays
+// &B)
+// {//Set A=B
+//     A.u=B.u;
+//     A.v=B.v;
+//     A.us=B.us;
+//     A.vs=B.vs;
+
+// }
