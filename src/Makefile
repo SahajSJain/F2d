@@ -6,7 +6,7 @@ DEPSNAME = INPUT.h FUNCTIONS.h FIELDVARS.h CLASSES.h COEFFVARS.h FLOWVARS.h IBMV
 DEPS = $(patsubst %,$(HDIR)/%,$(DEPSNAME))
 
 ODIR=./obj
-OBJNAME = main_program.o\
+OBJNAME = 		main_program.o\
  			read_input_data.o\
   			write_output_data.o\
    			setup_field_variables.o\
