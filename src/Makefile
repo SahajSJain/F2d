@@ -9,6 +9,7 @@ DEPSNAME =	INPUT.h\
 		COEFFVARS.h\ 
 		FLOWVARS.h\ 
 		IBMVARS.h 
+
 DEPS = $(patsubst %,$(HDIR)/%,$(DEPSNAME))
 
 ODIR=./obj
