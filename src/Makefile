@@ -2,7 +2,13 @@ CXX=g++-13
 CFLAGS= -pg  -Winline -Wextra  -Wall -Wextra -O3 -Werror -pedantic -Ofast -std=c++23 -fopenmp
 # -Wextra  -Wall -Wextra -O3 -Werror -pedantic -Ofast -Winline -std=c++2c
 HDIR=./headers
-DEPSNAME = INPUT.h FUNCTIONS.h FIELDVARS.h CLASSES.h COEFFVARS.h FLOWVARS.h IBMVARS.h 
+DEPSNAME =	INPUT.h\ 
+		FUNCTIONS.h\ 
+		FIELDVARS.h\ 
+		CLASSES.h\ 
+		COEFFVARS.h\ 
+		FLOWVARS.h\ 
+		IBMVARS.h 
 DEPS = $(patsubst %,$(HDIR)/%,$(DEPSNAME))
 
 ODIR=./obj
